@@ -5,394 +5,105 @@ namespace First_project
     class Program
     {
             
-        static void XTurn(out int xGuessB, out int yGuessB)
+        static void Turn(out int xGuessB, out int yGuessB, int playerToken)
         {
             string xVal;
             string yVal;
-            Console.WriteLine("Player X! Are you ready?");
+            string player = playerToken == 1 ? "X" : "Y";
+
+            Console.WriteLine($"Player {player}! Are you ready?");
             Console.WriteLine("What is the x coordinate of your guess?");
             xVal = Console.ReadLine();
             xGuessB = Convert.ToInt32(xVal);
+            xGuessB--;
             Console.WriteLine("What is the y coordinate of your guess?");
             yVal = Console.ReadLine();
             yGuessB = Convert.ToInt32(yVal);
-
-        }
-
-
-        static void YTurn(out int xGuessB, out int yGuessB)
-        {
-            string xVal;
-            string yVal;
-            Console.WriteLine("Player Y! Are you ready?");
-            Console.WriteLine("What is the x coordinate of your guess?");
-            xVal = Console.ReadLine();
-            xGuessB = Convert.ToInt32(xVal);
-            Console.WriteLine("What is the y coordinate of your guess?");
-            yVal = Console.ReadLine();
-            yGuessB = Convert.ToInt32(yVal);
+            yGuessB--;
         }
 
         static void DrawBoard(int[,] board)
         {
-            Console.WriteLine($"{board[1, 3]} {board[2, 3]} {board[3, 3]}");
-            Console.WriteLine($"{board[1, 2]} {board[2, 2]} {board[3, 2]}");
-            Console.WriteLine($"{board[1, 1]} {board[2, 1]} {board[3, 1]}");
+            Console.WriteLine();
+            Console.WriteLine($"{board[0, 2]} {board[1, 2]} {board[2, 2]}");
+            Console.WriteLine($"{board[0, 1]} {board[1, 1]} {board[2, 1]}");
+            Console.WriteLine($"{board[0, 0]} {board[1, 0]} {board[2, 0]}");
+            Console.WriteLine();
         }
 
-        static bool CheckVictoryX(int[,] board, int xGuess, int yGuess)
+        static bool CheckVictory(int[,] board, int pt)
         {
-            
-            int[] victoryArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-            if(board[xGuess + 1,yGuess + 1] == 1)
-            {
-                victoryArray[0] = 1;
-                Console.WriteLine("it worked!");
-                if (board[xGuess + 2, yGuess + 2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                    
-                }
-                if (board[xGuess - 1, yGuess - 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-
-                }
-
-            }
-            if (board[xGuess + 1, yGuess] == 1)
-            {
-                if (board[xGuess + 2, yGuess] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess - 1, yGuess] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess + 1, yGuess - 1] == 1)
-            {
-                if (board[xGuess + 2, yGuess - 2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess - 1, yGuess + 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess, yGuess - 1] == 1)
-            {
-                if (board[xGuess, yGuess - 2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess, yGuess + 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess - 1] == 1)
-            {
-                if (board[xGuess - 2, yGuess -2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess + 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess] == 1)
-            {
-                if (board[xGuess - 2, yGuess] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess + 1] == 1)
-            {
-                if (board[xGuess - 2, yGuess + 2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess - 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess, yGuess + 1] == 1)
-            {
-                if (board[xGuess, yGuess + 2] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess, yGuess - 1] == 1)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            return false;
-
-
+            return board[0, 0] == pt && board[0, 1] == pt && board[0, 2] == pt || 
+                   board[0, 1] == pt && board[1, 1] == pt && board[2, 1] == pt ||
+                   board[0, 2] == pt && board[1, 2] == pt && board[2, 2] == pt ||
+                   board[0, 0] == pt && board[1, 0] == pt && board[2, 0] == pt ||
+                   board[1, 0] == pt && board[1, 1] == pt && board[1, 2] == pt ||
+                   board[2, 0] == pt && board[2, 1] == pt && board[2, 2] == pt ||
+                   board[0, 0] == pt && board[1, 1] == pt && board[2, 2] == pt ||
+                   board[0, 2] == pt && board[1, 1] == pt && board[2, 0] == pt;
         }
 
-        static bool CheckVictoryY(int[,] board, int xGuess, int yGuess)
+        static void Main(string[] args)
         {
-
-            int[] victoryArray = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-            if (board[xGuess + 1, yGuess + 1] == 2)
-            {
-                victoryArray[0] = 1;
-                Console.WriteLine("it worked!");
-                if (board[xGuess + 2, yGuess + 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-                if (board[xGuess - 1, yGuess - 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-
-                }
-
-            }
-            if (board[xGuess + 1, yGuess] == 2)
-            {
-                if (board[xGuess + 2, yGuess] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess - 1, yGuess] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess + 1, yGuess - 1] == 2)
-            {
-                if (board[xGuess + 2, yGuess - 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess - 1, yGuess + 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess, yGuess - 1] == 2)
-            {
-                if (board[xGuess, yGuess - 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess, yGuess + 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess - 1] == 2)
-            {
-                if (board[xGuess - 2, yGuess - 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess + 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess] == 2)
-            {
-                if (board[xGuess - 2, yGuess] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess - 1, yGuess + 1] == 2)
-            {
-                if (board[xGuess - 2, yGuess + 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess + 1, yGuess - 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            if (board[xGuess, yGuess + 1] == 2)
-            {
-                if (board[xGuess, yGuess + 2] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-                }
-                if (board[xGuess, yGuess - 1] == 2)
-                {
-                    Console.WriteLine("YouWin!!");
-                    return true;
-
-                }
-            }
-            return false;
-        }
-
-            static void Main(string[] args)
-        {
-
-            
             bool play = true;
-            string playString;
-            while (play == true)
+            while (play)
             {
 
                 int xGuess;
                 int yGuess;
-                int[,] newBoard = new int[,] { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } };
+                int[,] newBoard = new int[,] { {0, 0, 0}, {0, 0, 0}, { 0, 0, 0} };
                 int[,] board = newBoard;
-                int turnCounter = 1;
-                while (turnCounter <= 9)
+                int turnCounter = 0;
+                bool invalidTurn = false;
+                bool draw = true;
+                DrawBoard(board);
+                while (turnCounter <= 8)
                 {
-                    
-                    //XTurn
-                    XTurn(out xGuess, out yGuess);
+                    int playerToken = turnCounter % 2 + 1;
 
-                    if (xGuess > 3)
+                    do{
+                      Turn(out xGuess, out yGuess, playerToken);
+                      if (xGuess > 2 || xGuess < 0 || yGuess > 2 || yGuess < 0) 
+                      {
+                         Console.WriteLine("That's not a square! Try again.");
+                         invalidTurn = true;
+                      }
+                      else if(board[xGuess, yGuess] != 0){
+                        Console.WriteLine("Already used this square! Pick another.");
+                        invalidTurn = true;
+                      }
+                      else{
+                        invalidTurn = false;
+                      }
+                    }while(invalidTurn);
+
+                    board[xGuess, yGuess] = playerToken;
+                    DrawBoard(board);
+
+                    if (CheckVictory(board, playerToken))
                     {
-                        Console.WriteLine("That's not a square! Try again.");
-                        XTurn(out xGuess, out yGuess);
+                      Console.WriteLine("You Won!");
+                      draw = false;
+                      break;
                     }
-                    if (xGuess < 1)
-                    {
-                        Console.WriteLine("That's not a square! Try again.");
-                        XTurn(out xGuess, out yGuess);
-                    }
-                    else
-                    {
-
-                        if (board[xGuess, yGuess] != 0)
-                        {
-                            Console.WriteLine("Already used this square! Pick another.");
-                            XTurn(out xGuess, out yGuess);
-                        }
-                        else
-                        {
-                            board[xGuess, yGuess] = 1;
-                            DrawBoard(board);
-                            if (CheckVictoryX(board, xGuess, yGuess) == true)
-                                {
-                                goto End;
-                            }
-
-
-                        }
-                    }
-                    turnCounter += 1;
-                    //YTurn
-                    YTurn(out xGuess, out yGuess);
-
-                    if (xGuess > 3)
-                    {
-                        Console.WriteLine("That's not a square! Try again.");
-                        YTurn(out xGuess, out yGuess);
-                    }
-                    if (xGuess < 1)
-                    {
-                        Console.WriteLine("That's not a square! Try again.");
-                        YTurn(out xGuess, out yGuess);
-                    }
-                    else
-                    {
-
-                        if (board[xGuess, yGuess] != 0)
-                        {
-                            Console.WriteLine("Already used this square! Pick another.");
-                            YTurn(out xGuess, out yGuess);
-                        }
-                        else
-                        {
-                            board[xGuess, yGuess] = 2;
-                            DrawBoard(board);
-                            if (CheckVictoryY(board, xGuess, yGuess) == true)
-                            { goto End; }
-                        }
-                    }
-                    turnCounter += 1;
-
+                    turnCounter++;
                 }
 
-                Console.WriteLine("Cat Game! Woof.");
+              if(draw){
+                  Console.WriteLine("Cat Game! Woof.");
+              }
 
+              Console.WriteLine("play again? true/false");
+              string playString = Console.ReadLine();
+              if (playString == "false")
+              {
+                  play = false;
 
-               
-                
-                
-                End:
-                Console.WriteLine("play again? true/false");
-                playString = Console.ReadLine();
-                if (playString == "false")
-                {
-                    play = false;
-
-                }
-            }
-
-
-
-
+              }
+              else{
+                play = true;
+              }
+           }
         }
     }
 }
